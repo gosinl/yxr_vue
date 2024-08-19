@@ -1,4 +1,4 @@
-package com.yxr.API.PoJo;
+package com.yxr.API.poJo;
 
 @SuppressWarnings("serial")
 public class AesException extends Exception {
