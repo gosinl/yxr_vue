@@ -1,6 +1,9 @@
 package com.yxr.API.poJo;
 
+import lombok.Data;
+
 @SuppressWarnings("serial")
+@Data
 public class AesException extends Exception {
 
 	public final static int OK = 0;
@@ -18,7 +21,11 @@ public class AesException extends Exception {
 
 	private int code;
 
-	private static String getMessage(int code) {
+	public String AesException(int code) {
+		return getMessage(code);
+	}
+
+	public static String getMessage(int code) {
 		switch (code) {
 		case ValidateSignatureError:
 			return "签名验证错误";
@@ -51,9 +58,9 @@ public class AesException extends Exception {
 		return code;
 	}
 
-	public AesException(int code) {
+	/*public AesException(int code) {
 		super(getMessage(code));
 		this.code = code;
-	}
+	}*/
 
 }

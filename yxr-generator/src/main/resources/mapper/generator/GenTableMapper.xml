@@ -102,7 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		and table_name in
 	    <foreach collection="array" item="name" open="(" separator="," close=")">
  			#{name}
-        </foreach> 
+        </foreach>
 	</select>
 	
 	<select id="selectTableByName" parameterType="String" resultMap="GenTableResult">
@@ -201,7 +201,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
     
     <delete id="deleteGenTableByIds" parameterType="Long">
-        delete from gen_table where table_id in 
+        delete from gen_table where table_id in
         <foreach collection="array" item="tableId" open="(" separator="," close=")">
             #{tableId}
         </foreach>

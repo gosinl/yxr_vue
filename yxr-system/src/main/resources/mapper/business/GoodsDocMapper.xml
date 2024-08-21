@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yxr.business.mapper.GoodsDocMapper">
+	
+	<select id="selectByCode" parameterType="Map"  resultType="com.yxr.API.poJo.ResponseMedicalStock">
+		SELECT
+			a.goodsId AS itemCode,
+			a.goodsName AS insuItemName,
+			a.ybbm AS insuItemCode,
+			c.RETAILP AS salePrice,
+
+			b.PLACENUM  AS kcl,
+			a.MANUFACTURER AS factory,
+			a.GOODSSPEC AS spec,
+			a.barcode AS barCode
+		FROM
+			GOODSDOC a
+				JOIN ogBALANCE b ON a.GOODSID = b.GOODSID AND a.ENTID = b.ENTID
+				JOIN gorelat c ON b.GOODSID = c.GOODSID  AND b.ENTID = c.ENTID  and b.orgid=c.orgid
+				join orgdoc d on c.orgid=d.orgid and c.entid=d.entid
+		WHERE
+			a.ENTID = 'E27FKPSX3KT'
+		  and d.ddbh = #{drugStoreNo,jdbcType=VARCHAR}
+		  and YBBM = #{insuItemCode,jdbcType=VARCHAR}
+	</select>
+
+	
+</mapper>
