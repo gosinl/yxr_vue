@@ -24,4 +24,18 @@ public interface IGoodsDocService extends IService<GoodsDoc> {
      *
      */
     public AjaxResult medicalStock(String json);
+
+
+    /**
+     * 买药接口
+     *
+     */
+    public AjaxResult medicalBuy(String json);
+
+
+    /**
+     * 退药接口
+     *
+     */
+    public AjaxResult medicalRefund(String json);
 }

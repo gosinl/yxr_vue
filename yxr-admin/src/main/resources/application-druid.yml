@@ -13,7 +13,9 @@ spring:
             slave:
                 # 从数据源开关/默认关闭
                 enabled: true
-                url: jdbc:oracle:thin:@192.168.138.146:1521/orcl
+                #url: jdbc:oracle:thin:@192.168.138.146:1521/orcl
+                url: jdbc:oracle:thin:@192.168.140.150:1521/orcl
+                #url: jdbc:oracle:thin:@61.184.95.194:15211/orcl
                 username: race
                 password: race2017
                 driverClassName: oracle.jdbc.driver.OracleDriver

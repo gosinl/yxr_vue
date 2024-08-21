@@ -2,12 +2,17 @@ package com.yxr.API;
 
 
 import ch.qos.logback.core.encoder.EchoEncoder;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yxr.API.utils.RandomUtil;
 import com.yxr.API.utils.WXBizJsonMsgCrypt;
+import com.yxr.common.utils.ip.IpUtils;
+import com.yxr.core.domain.YxrApiShanxipicc;
+import com.yxr.core.mapper.YxrApiShanxipiccMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -18,25 +23,26 @@ import java.util.Map;
 @Component
 public class ShanxiPICC {
 
+
     public static final String token = "duijieruanjianpeizhi";
     public static final String corpid = "duijieruanjianpeizhi01";
     public static final String encodingAesKey = "ayk5kdXDs7DfkKyFGFTJgBS5bod3qswBhgFgD0warBY";
 
     //{"echostr":"df1pZY5H90x0k4ETuwnraa02ggAO9kBGPRrxOKN0rqeGZMRR7qoTlQRbP2M2IkBvNhTwN7dtpoVueJrh+FzVKxqN7MWeb0Cknbgp5B1GR/EgRvgYkgxAJrE8n7H/OGcRQbcxImBhsS6D8rlNDZY5Mj1QnRoKkqZ+PPpyNj3a+vA=","msgsignature":"eb32af104c55e26bf79526bd3de192ec393e06d3","timestamp":"1724143363705","nonce":"1367198282","corpid":"duijieruanjianpeizhi01"}
-    public JSONObject medicalStockDecryption(JSONObject jsonObject) throws Exception{
+    public JSONObject medicalDecryption(JSONObject jsonObject) throws Exception{
         WXBizJsonMsgCrypt wxcpt = new WXBizJsonMsgCrypt(token, encodingAesKey, corpid);
         String dpResult = wxcpt.DecryptMsg(jsonObject.get("msgsignature").toString(),jsonObject.get("timestamp").toString(),jsonObject.get("nonce").toString(),jsonObject.get("echostr").toString());
-
-        System.out.println("解密：" + dpResult);
+        log.info("解密：" + dpResult);
         JSONObject echostrJson = JSONUtil.parseObj(dpResult);
         return echostrJson;
     }
 
-    public String medicalStockEncryption(String jsonString) throws Exception{
+    public String medicalEncryption(String jsonString) throws Exception{
         WXBizJsonMsgCrypt wxcpt = new WXBizJsonMsgCrypt(token, encodingAesKey, corpid);
         String sReqTimeStamp = Long.toString(System.currentTimeMillis());
         String sReqNonce = RandomUtil.randomNumbers(10);
         String data = wxcpt.EncryptMsg(jsonString, sReqTimeStamp, sReqNonce, corpid);
+        log.info("加密：" + data);
         return data;
     }
 
@@ -52,8 +58,8 @@ public class ShanxiPICC {
         try {
 
         WXBizJsonMsgCrypt wxcpt = new WXBizJsonMsgCrypt(token, encodingAesKey, corpid);
-        //String sRespData = "{\"drugStoreNo\":\"P61082600353\",\"medicCode\":\"XCO7ABM062A001010405024\"}";
-        String sRespData = "{\"drugStoreNo\":\"P61092900003\",\"insuItemCode\":\"XD07BBQ085V003010100443\"}";
+        String sRespData = "{\"drugStoreNo\":\"P6103020202\",\"feedetlNo\":\"fa1603c6e3b3415484e016df30796ceb\"}";
+       // String sRespData = "{\"drugStoreNo\":\"P61092900003\",\"insuItemCode\":\"XD07BBQ085V003010100443\"}";
 
             //RandomUtil.randomNumbers(10)采用hutool 的随机生成十位数
             //Long.toString(System.currentTimeMillis()) 生成时间戳
@@ -63,20 +69,21 @@ public class ShanxiPICC {
             String sEncryptMsg = wxcpt.EncryptMsg(sRespData, timeStamp, nonce);
             System.out.println("加密参数： " + sEncryptMsg);
 
-            String jie = "{\"echostr\":\"/nG2mmAZEo951Yg0dmL58ihI39+eoczjQAZBLUiScF3KAL2p14S" +
+            /*String jie = "{\"echostr\":\"/nG2mmAZEo951Yg0dmL58ihI39+eoczjQAZBLUiScF3KAL2p14S" +
                     "/0VjCe1UV0SUxNpeGO8pjgKcj6DI1jcrfdnBSVJHnOTVrvf8npCJgCF1AX9rnfm1leti6WXFqc1dJmENL3YiT3ebwPAxuDZeeH5lIWOmJZSAajL4cCU0Be5J2IYi8eA" +
                     "+8j1XQPNJH08O6UcM7M2QQtTL4fUfBBdKwhzFLv1lcJeIH9oFOJ1j7x0Ct75RIfBo4sluSOMq7YHgHWEGzxeNbTLPk1CllFI3RZ1JAOHGSk1zALvsv" +
                     "+MU9iVsW5E7q8qjJgxI0NCVpKSuZbp0FdUBpERTzjTJpqRpV1OqP5WNtUSNgkL0ymL9an3k9k3OcfhoUTaerZ5td6Ad4Z1Eo0aBAK0SheE3eaM5emmKeJ/iJPH8mJRh9HAefOq3hEV3PG68mq1hDArmo7wVgpXRwH3mMb1yeRCC" +
                     "+Lw5GIUDyuJh93XZIEn4tJhZrF/0tbTuPJ5vkiil+MB+R+Ss88lW6IohUi+ymFuwOJ/oqFJ1jak4Dw8VCa9+pkY5USwy+9+kMygIK9V8JlOrUk1jv5J9LSuHVmzNeBN5LXmncwR2CD0cOEsaq4dHHjicAbdkCkBJXvLpGGnNMu9xJR6ZYTVVSbMGOU4" +
                     "/nyzugOEExpyVl3Juz+Vd1rPQ2WlQbFLw3L6VtullptCY90JpsczI5cVqjT7tgKud6YmE6YzBIzQ==\",\"msgSignature\":\"40da5168010a30a2041c060e1aaac28e419cf7a4\",\"timestamp\":\"1724202918121\"," +
                     "\"nonce\":\"1913051095\",\"corpid\":\"duijieruanjianpeizhi01\"}";
-            JSONObject o = JSONUtil.parseObj(jie);
+            JSONObject o = JSONUtil.parseObj(jie);*/
 
-            //o.put("corpid",corpid);
+            JSONObject o = JSONUtil.parseObj(sEncryptMsg);
+            o.put("corpid",corpid);
             System.out.println(o);
 
 
-            String dpResult = wxcpt.DecryptMsg(o.get("msgSignature").toString(),o.get("timestamp").toString(),o.get("nonce").toString(),o.get("echostr").toString());
+            String dpResult = wxcpt.DecryptMsg(o.get("msgsignature").toString(),o.get("timestamp").toString(),o.get("nonce").toString(),o.get("echostr").toString());
             System.out.println("解密参数： " +dpResult);
 
         } catch (Exception e) {

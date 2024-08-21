@@ -33,4 +33,19 @@ public class ShanxiPICCController {
         //return AjaxResult.success(jsonObject);
     }
 
+    //查看库存
+    @PostMapping("medicalBuy")
+    public AjaxResult medicalBuy(@RequestBody String jsonData, HttpServletRequest request) {
+        AjaxResult result = goodsDocService.medicalBuy(jsonData);
+        return result;
+        //return AjaxResult.success(jsonObject);
+    }
+
+    //查看库存
+    @PostMapping("medicalRefund")
+    public AjaxResult medicalRefund(@RequestBody String jsonData, HttpServletRequest request) {
+        AjaxResult result = goodsDocService.medicalRefund(jsonData);
+        return result;
+        //return AjaxResult.success(jsonObject);
+    }
 }
