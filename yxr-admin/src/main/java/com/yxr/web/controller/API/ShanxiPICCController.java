@@ -33,7 +33,7 @@ public class ShanxiPICCController {
         //return AjaxResult.success(jsonObject);
     }
 
-    //查看库存
+    //买药
     @PostMapping("medicalBuy")
     public AjaxResult medicalBuy(@RequestBody String jsonData, HttpServletRequest request) {
         AjaxResult result = goodsDocService.medicalBuy(jsonData);
@@ -41,7 +41,7 @@ public class ShanxiPICCController {
         //return AjaxResult.success(jsonObject);
     }
 
-    //查看库存
+    //退药
     @PostMapping("medicalRefund")
     public AjaxResult medicalRefund(@RequestBody String jsonData, HttpServletRequest request) {
         AjaxResult result = goodsDocService.medicalRefund(jsonData);

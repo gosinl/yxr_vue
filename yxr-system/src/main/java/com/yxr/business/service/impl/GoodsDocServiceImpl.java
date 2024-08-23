@@ -1,28 +1,28 @@
 package com.yxr.business.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yxr.API.ShanxiPICC;
 import com.yxr.API.poJo.AesException;
 import com.yxr.API.poJo.ResponseMedicalStock;
+import com.yxr.business.domain.ApiShanxipiccdt;
+import com.yxr.business.domain.ApiShanxipiccmt;
 import com.yxr.business.domain.GoodsDoc;
 import com.yxr.business.mapper.GoodsDocMapper;
+import com.yxr.business.service.IApiShanxipiccmtService;
 import com.yxr.business.service.IGoodsDocService;
 import com.yxr.common.core.domain.AjaxResult;
 import com.yxr.common.utils.ip.IpUtils;
 import com.yxr.core.domain.YxrApiShanxipicc;
-import com.yxr.core.mapper.YxrApiShanxipiccMapper;
 import com.yxr.core.service.IYxrApiShanxipiccService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,6 +47,9 @@ public class GoodsDocServiceImpl extends ServiceImpl<GoodsDocMapper, GoodsDoc> i
 
     @Autowired
     private IYxrApiShanxipiccService yxrApiShanxipiccService;
+
+    @Autowired
+    private IApiShanxipiccmtService iApiShanxipiccmtService;
 
     //@Transactional
     @Override
@@ -81,7 +84,7 @@ public class GoodsDocServiceImpl extends ServiceImpl<GoodsDocMapper, GoodsDoc> i
             yxrApiShanxipicc.setIp(IpUtils.getIpAddr());
             yxrApiShanxipicc.setInterfaceType(1);
             yxrApiShanxipicc.setStatus(0);
-            yxrApiShanxipicc.setMsgSignature(jsonObject.getStr("msgsignature"));
+            yxrApiShanxipicc.setMsgSignature(jsonObject.getStr("msgSignature"));
             yxrApiShanxipicc.setTimestamp(jsonObject.getStr("timestamp"));
             yxrApiShanxipicc.setRequestBody(jsonObject.put("echostr",echostrJson).toString());
             Long yxrApiShanxipiccId;
@@ -142,7 +145,7 @@ public class GoodsDocServiceImpl extends ServiceImpl<GoodsDocMapper, GoodsDoc> i
             yxrApiShanxipicc.setIp(IpUtils.getIpAddr());
             yxrApiShanxipicc.setInterfaceType(2);
             yxrApiShanxipicc.setStatus(1);
-            yxrApiShanxipicc.setMsgSignature(jsonObject.getStr("msgsignature"));
+            yxrApiShanxipicc.setMsgSignature(jsonObject.getStr("msgSignature"));
             yxrApiShanxipicc.setTimestamp(jsonObject.getStr("timestamp"));
             yxrApiShanxipicc.setRequestBody(jsonObject.put("echostr",echostrJson).toString());
             yxrApiShanxipicc.setResponseBody("OK");
@@ -154,9 +157,14 @@ public class GoodsDocServiceImpl extends ServiceImpl<GoodsDocMapper, GoodsDoc> i
                 yxrApiShanxipiccId = yxrApiShanxipicc.getId();
             }
             //下面业务逻辑不清晰，暂未写完
+            //先入库
+            return  iApiShanxipiccmtService.addApiShanxipicc(echostrJson);
+            //下账
+
+            //减库存
 
 
-            return AjaxResult.success();
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -186,7 +194,7 @@ public class GoodsDocServiceImpl extends ServiceImpl<GoodsDocMapper, GoodsDoc> i
             yxrApiShanxipicc.setIp(IpUtils.getIpAddr());
             yxrApiShanxipicc.setInterfaceType(3);
             yxrApiShanxipicc.setStatus(1);
-            yxrApiShanxipicc.setMsgSignature(jsonObject.getStr("msgsignature"));
+            yxrApiShanxipicc.setMsgSignature(jsonObject.getStr("msgSignature"));
             yxrApiShanxipicc.setTimestamp(jsonObject.getStr("timestamp"));
             yxrApiShanxipicc.setRequestBody(jsonObject.put("echostr",echostrJson).toString());
             yxrApiShanxipicc.setResponseBody("OK");
@@ -199,8 +207,7 @@ public class GoodsDocServiceImpl extends ServiceImpl<GoodsDocMapper, GoodsDoc> i
             }
             //下面业务逻辑不清晰，暂未写完
 
-
-            return AjaxResult.success();
+            return iApiShanxipiccmtService.updateByfeedetlNo(echostrJson);
         } catch (Exception exception) {
             exception.printStackTrace();
         }

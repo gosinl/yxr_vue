@@ -31,7 +31,7 @@ public class ShanxiPICC {
     //{"echostr":"df1pZY5H90x0k4ETuwnraa02ggAO9kBGPRrxOKN0rqeGZMRR7qoTlQRbP2M2IkBvNhTwN7dtpoVueJrh+FzVKxqN7MWeb0Cknbgp5B1GR/EgRvgYkgxAJrE8n7H/OGcRQbcxImBhsS6D8rlNDZY5Mj1QnRoKkqZ+PPpyNj3a+vA=","msgsignature":"eb32af104c55e26bf79526bd3de192ec393e06d3","timestamp":"1724143363705","nonce":"1367198282","corpid":"duijieruanjianpeizhi01"}
     public JSONObject medicalDecryption(JSONObject jsonObject) throws Exception{
         WXBizJsonMsgCrypt wxcpt = new WXBizJsonMsgCrypt(token, encodingAesKey, corpid);
-        String dpResult = wxcpt.DecryptMsg(jsonObject.get("msgsignature").toString(),jsonObject.get("timestamp").toString(),jsonObject.get("nonce").toString(),jsonObject.get("echostr").toString());
+        String dpResult = wxcpt.DecryptMsg(jsonObject.get("msgSignature").toString(),jsonObject.get("timestamp").toString(),jsonObject.get("nonce").toString(),jsonObject.get("echostr").toString());
         log.info("解密：" + dpResult);
         JSONObject echostrJson = JSONUtil.parseObj(dpResult);
         return echostrJson;
