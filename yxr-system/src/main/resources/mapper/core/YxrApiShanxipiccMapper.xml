@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="requestBody != null  and requestBody != ''"> and request_body = #{requestBody}</if>
             <if test="responseBody != null  and responseBody != ''"> and response_body = #{responseBody}</if>
         </where>
+        order by id desc
     </select>
     
     <select id="selectYxrApiShanxipiccById" parameterType="Long" resultMap="YxrApiShanxipiccResult">

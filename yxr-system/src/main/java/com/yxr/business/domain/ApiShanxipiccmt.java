@@ -110,5 +110,7 @@ public class ApiShanxipiccmt implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-
+    /*收银台是否已提帐 Y 已提帐 N 未提帐*/
+    @TableField(value = "isDone")
+    private String isDone;
 }

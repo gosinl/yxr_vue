@@ -36,7 +36,7 @@ public class YxrApiShanxipicc extends BaseEntity
     private String timestamp;
 
     /** 1-成功;0-失败 */
-    @Excel(name = "1-成功;0-失败")
+    @Excel(name = "药品订单退货状态 1-正常;0-退货")
     private Integer status;
 
     /** 1.查看库存接口 2.门慢购药接口 3.门慢退药接口 4.购药记录查询 */

@@ -58,7 +58,7 @@ public class ShanxiPICC {
         try {
 
         WXBizJsonMsgCrypt wxcpt = new WXBizJsonMsgCrypt(token, encodingAesKey, corpid);
-        String sRespData = "{\"drugStoreNo\":\"P6103020202\",\"feedetlNo\":\"fa1603c6e3b3415484e016df30796ceb\"}";
+        String sRespData = "{\"drugStoreNo\":\"P61092900003\",\"feedetlNo\":\"P61092900003202408231511580096\"}";
        // String sRespData = "{\"drugStoreNo\":\"P61092900003\",\"insuItemCode\":\"XD07BBQ085V003010100443\"}";
 
             //RandomUtil.randomNumbers(10)采用hutool 的随机生成十位数
@@ -83,7 +83,7 @@ public class ShanxiPICC {
             System.out.println(o);
 
 
-            String dpResult = wxcpt.DecryptMsg(o.get("msgsignature").toString(),o.get("timestamp").toString(),o.get("nonce").toString(),o.get("echostr").toString());
+            String dpResult = wxcpt.DecryptMsg(o.get("msgSignature").toString(),o.get("timestamp").toString(),o.get("nonce").toString(),o.get("echostr").toString());
             System.out.println("解密参数： " +dpResult);
 
         } catch (Exception e) {

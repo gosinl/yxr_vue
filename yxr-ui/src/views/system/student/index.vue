@@ -127,7 +127,7 @@
       <el-table-column label="爱好" align="center" prop="studentHobby" />
       <el-table-column label="性别" align="center" prop="studentSex" width="80">
         <template slot-scope="scope">
-<!--          是否当未找到匹配的数据时，显示原值value   :show-value="false"-->
+          <!-- 是否当未找到匹配的数据时，显示原值value   :show-value="false"-->
           <dict-tag :options="dict.type.sys_user_sex" :value="scope.row.studentSex" :show-value="false"/>
         </template>
       </el-table-column>

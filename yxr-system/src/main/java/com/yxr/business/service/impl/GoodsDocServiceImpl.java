@@ -202,11 +202,11 @@ public class GoodsDocServiceImpl extends ServiceImpl<GoodsDocMapper, GoodsDoc> i
             if(ObjectUtil.isEmpty(yxrApiShanxipicc.getId())){
                 yxrApiShanxipiccId = yxrApiShanxipiccService.insertYxrApiShanxipiccReturenId(yxrApiShanxipicc);
             }else {
-                yxrApiShanxipiccService.updateYxrApiShanxipicc(yxrApiShanxipicc);
-                yxrApiShanxipiccId = yxrApiShanxipicc.getId();
+                return AjaxResult.error("请勿重复退单");
+                //yxrApiShanxipiccService.updateYxrApiShanxipicc(yxrApiShanxipicc);
+                //yxrApiShanxipiccId = yxrApiShanxipicc.getId();
             }
             //下面业务逻辑不清晰，暂未写完
-
             return iApiShanxipiccmtService.updateByfeedetlNo(echostrJson);
         } catch (Exception exception) {
             exception.printStackTrace();

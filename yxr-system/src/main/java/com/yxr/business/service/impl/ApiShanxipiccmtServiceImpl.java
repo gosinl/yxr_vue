@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -69,6 +70,8 @@ public class ApiShanxipiccmtServiceImpl extends ServiceImpl<ApiShanxipiccmtMappe
         apiShanxipiccmt.setStatus("1");
         apiShanxipiccmt.setRequest(json.toString());
         apiShanxipiccmt.setCreateTime(DateUtils.getNowDate());
+        /*收银台是否已提帐 Y 已提帐 N 未提帐*/
+        apiShanxipiccmt.setIsDone("N");
 
         apiShanxipiccmtMapper.insert(apiShanxipiccmt);
 
@@ -92,7 +95,7 @@ public class ApiShanxipiccmtServiceImpl extends ServiceImpl<ApiShanxipiccmtMappe
         return apiShanxipiccmtMapper.selectBillNo();
     }
 
-
+    @Transactional
     @Override
     public AjaxResult updateByfeedetlNo(JSONObject json) {
         //{
@@ -107,10 +110,50 @@ public class ApiShanxipiccmtServiceImpl extends ServiceImpl<ApiShanxipiccmtMappe
             //iApiShanxipiccmtService.updateById(apiShanxipiccmtList.get(0));
             return  AjaxResult.error("未找到对应的订单");
         }
-         ApiShanxipiccmt apiShanxipiccmt = new ApiShanxipiccmt();
+
+         /*ApiShanxipiccmt apiShanxipiccmt = new ApiShanxipiccmt();
          apiShanxipiccmt.setStatus("2");
          apiShanxipiccmt.setFeedetlNo(json.getStr("feedetlNo"));
-         apiShanxipiccmtMapper.updateByfeedetlNo(apiShanxipiccmt);
-         return AjaxResult.success();
+         apiShanxipiccmtMapper.updateByfeedetlNo(apiShanxipiccmt);*/
+        //不更新原来订单，新增一笔订单
+        ApiShanxipiccmt apiShanxipiccmt = apiShanxipiccmtList.get(0);
+        Long billNo = apiShanxipiccmtMapper.selectBillNo();
+
+        //先入明细
+        ApiShanxipiccdt apiShanxipiccdt = new ApiShanxipiccdt();
+        JSONArray drugList = new JSONObject(apiShanxipiccmt.getRequest()).getJSONArray("drugList");
+        for (Object item : drugList){
+            JSONObject drug = new JSONObject(item);
+            apiShanxipiccdt.setBillNo(billNo);
+            apiShanxipiccdt.setInsuitemcode(drug.getStr("insuItemCode"));
+            apiShanxipiccdt.setInsuitemname(drug.getStr("insuItemName"));
+            apiShanxipiccdt.setItemnum("-"+drug.getStr("itemNum"));
+            apiShanxipiccdt.setPrice(drug.getStr("price"));
+            apiShanxipiccdtMapper.insert(apiShanxipiccdt);
+        }
+
+
+        //再入总帐，金额变为负
+        apiShanxipiccmt.setBillNo(billNo);
+        apiShanxipiccmt.setIsDone("N");
+        apiShanxipiccmt.setRequest("");
+
+        BigDecimal acctPay =  new BigDecimal(apiShanxipiccmt.getAcctPay());
+        if(acctPay.compareTo(BigDecimal.ZERO) != 0){
+            apiShanxipiccmt.setAcctPay(acctPay.negate().toString());
+        }
+
+        apiShanxipiccmt.setMedfeeSumamt(new BigDecimal(apiShanxipiccmt.getMedfeeSumamt()).negate().toString());
+
+        apiShanxipiccmt.setHifpPay("-"+apiShanxipiccmt.getHifpPay());
+
+
+        BigDecimal cashpay =  new BigDecimal(apiShanxipiccmt.getPsnCashpay());
+        if(cashpay.compareTo(BigDecimal.ZERO) != 0){
+            apiShanxipiccmt.setPsnCashpay(cashpay.negate().toString());
+        }
+
+        apiShanxipiccmtMapper.insert(apiShanxipiccmt);
+        return AjaxResult.success();
     }
 }

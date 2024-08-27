@@ -83,10 +83,45 @@
       <el-table-column label="ip地址" align="center" prop="ip" />
       <el-table-column label="加密签名" align="center" prop="msgSignature" />
       <el-table-column label="时间戳" align="center" prop="timestamp" />
-      <el-table-column label="1-成功;0-失败" align="center" prop="status" />
-      <el-table-column label="1.查看库存接口 2.门慢购药接口 3.门慢退药接口 4.购药记录查询" align="center" prop="interfaceType" />
-      <el-table-column label="请求数据" align="center" prop="requestBody" />
-      <el-table-column label="返回数据" align="center" prop="responseBody" />
+      <el-table-column label="状态" align="center" prop="status" >
+      <template slot-scope="scope">
+        <!-- 是否当未找到匹配的数据时，显示原值value   :show-value="false"-->
+        <dict-tag :options="dict.type.api_medical_status" :value="scope.row.status" :show-value="false"/>
+      </template>
+      </el-table-column>
+      <el-table-column label="接口类别" align="center" prop="interfaceType" >
+      <template slot-scope="scope">
+        <!-- 是否当未找到匹配的数据时，显示原值value   :show-value="false"-->
+        <dict-tag :options="dict.type.medical_interface_type" :value="scope.row.interfaceType" :show-value="false"/>
+      </template>
+      </el-table-column>
+      <el-table-column label="请求数据" align="center" prop="requestBody">
+        <template slot-scope="scope">
+          <el-input
+            v-model="scope.row.requestBody"
+            type="textarea"
+            :autosize="{minRows: 2, maxRows: 5}"
+            :style="{width: '100%'}"
+            :readonly = true >
+          </el-input>
+        </template>
+      </el-table-column>
+      <el-table-column label="返回数据" align="center" prop="responseBody" >
+        <template slot-scope="scope">
+          <el-input
+            v-model="scope.row.responseBody"
+            type="textarea"
+            :autosize="{minRows: 2, maxRows: 5}"
+            :style="{width: '100%'}"
+            :readonly = true>
+          </el-input>
+        </template>
+      </el-table-column>
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template slot-scope="scope">
+          <span>{{ parseTime(scope.row.createTime) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -147,6 +182,9 @@ import { listShanxipicc, getShanxipicc, delShanxipicc, addShanxipicc, updateShan
 
 export default {
   name: "Shanxipicc",
+  dicts: ['api_medical_status', 'medical_interface_type','sys_yes_no'],
+  components: {
+  },
   data() {
     return {
       // 遮罩层
@@ -183,6 +221,16 @@ export default {
       form: {},
       // 表单校验
       rules: {
+          requestBody: [{
+          required: true,
+          message: '请输入多行文本',
+          trigger: 'blur'
+        }],
+          responseBody: [{
+          required: true,
+          message: '请输入多行文本',
+          trigger: 'blur'
+        }],
       }
     };
   },
