@@ -23,10 +23,9 @@ import java.util.Map;
 @Component
 public class ShanxiPICC {
 
-
-    public static final String token = "duijieruanjianpeizhi";
-    public static final String corpid = "duijieruanjianpeizhi01";
-    public static final String encodingAesKey = "ayk5kdXDs7DfkKyFGFTJgBS5bod3qswBhgFgD0warBY";
+    public static final String token = "yongxinrenruanjian";
+    public static final String corpid = "yongxinrenruanjian01";
+    public static final String encodingAesKey = "akyxrp6109DfkKyFGFTJgBS5bod3qswBhgFgD0warAK";
 
     //{"echostr":"df1pZY5H90x0k4ETuwnraa02ggAO9kBGPRrxOKN0rqeGZMRR7qoTlQRbP2M2IkBvNhTwN7dtpoVueJrh+FzVKxqN7MWeb0Cknbgp5B1GR/EgRvgYkgxAJrE8n7H/OGcRQbcxImBhsS6D8rlNDZY5Mj1QnRoKkqZ+PPpyNj3a+vA=","msgsignature":"eb32af104c55e26bf79526bd3de192ec393e06d3","timestamp":"1724143363705","nonce":"1367198282","corpid":"duijieruanjianpeizhi01"}
     public JSONObject medicalDecryption(JSONObject jsonObject) throws Exception{

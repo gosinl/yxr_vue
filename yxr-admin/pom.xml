@@ -69,7 +69,13 @@
             <groupId>yxr</groupId>
             <artifactId>yxr-generator</artifactId>
         </dependency>
-
+    
+        <!-- 核心模块-->
+        <dependency>
+            <groupId>yxr</groupId>
+            <artifactId>yxr-report</artifactId>
+        </dependency>
+        
     </dependencies>
 
     <build>

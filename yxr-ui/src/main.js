@@ -37,6 +37,9 @@ import DictTag from '@/components/DictTag'
 import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
+// 复制剪贴板
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts

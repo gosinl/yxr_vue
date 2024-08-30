@@ -154,6 +154,13 @@
                 <version>${cn.hutool}</version>
             </dependency>
     
+            <!-- dynamic-datasource 多数据源-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>3.5.0</version>
+            </dependency>
+            
             <!-- mybatis-plus 增强CRUD -->
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -216,9 +223,15 @@
                 <version>${yxr.version}</version>
             </dependency>
             
+            <!-- 业务模块-->
+            <dependency>
+                <groupId>yxr</groupId>
+                <artifactId>yxr-report</artifactId>
+                <version>${yxr.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
+    
     <modules>
         <module>yxr-admin</module>
         <module>yxr-framework</module>
@@ -226,6 +239,7 @@
         <module>yxr-quartz</module>
         <module>yxr-generator</module>
         <module>yxr-common</module>
+        <module>yxr-report</module>
     </modules>
     <packaging>pom</packaging>
 

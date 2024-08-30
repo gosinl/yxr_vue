@@ -52,6 +52,19 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/report',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: 'generalReport',
+        name: 'generalReport',
+        component: (resolve) => require(['@/views/report/gen/generalReport'], resolve),
+        meta: { title: '报表预览', icon: 'dashboard'}
+      },
+    ]
+  },
+  {
     path: '/404',
     component: () => import('@/views/error/404'),
     hidden: true
